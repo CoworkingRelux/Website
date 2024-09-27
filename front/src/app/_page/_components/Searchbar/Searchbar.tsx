@@ -16,7 +16,6 @@ const Searchbar = () => {
   const [offices, setOffices] = useState<IOffice[]>([]);
   const [showDropdown, setShowDropdown] = useState(false); // Nueva variable de estado para controlar el dropdown
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -41,9 +40,13 @@ const Searchbar = () => {
     }
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const inputValue = event.target.value;
     setCountry(inputValue);
+    await fetchOffices(country);
+    setShowDropdown(true);
   };
 
   const fetchOffices = async (query: string) => {
